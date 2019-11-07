@@ -1,16 +1,18 @@
 from flask import Flask, render_template
-from Flask _sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+from formulario import Mensagemform
+
 app = Flask(__name__)
 db = SQLAlchemy(app)
+app.config ['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///minhasmensagens.db'
+app.config ['SECRET_KEY'] = 'virotia é incrível'
 
-app.config ['SQLALCHEMY DATABASE_URI:'] = 'sqlite:///minhasmensagens.db'
+class Mensagem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mensagem = db.Column(db.Text, nullable=False)
 
-class Mensagem(db.model):
-    id = db.column(db.interger, primary key=True)
-    mensagem = db.Column(db.text, nullable=False)
-
-    def__repre__(self)
-    return self.mensagem
+    def __repre__(self):
+        return self.mensagem
 
 
 
@@ -18,9 +20,14 @@ class Mensagem(db.model):
 def index():
     return render_template('index.html')
 
-@app.route('/nova mensagem')
+@app.route('/novamensagem', methods={'POST', 'GET'})
 def novaMensagem():
-    return render_template('mensagem.html')
+    
+    form = Mensagemform()
+
+    print(form.mensagem.data)
+    
+    return render_template('mensagem.html', form=form)
 
 
 if __name__ == "__main__":
